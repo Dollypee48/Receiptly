@@ -3,72 +3,88 @@ import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-100 text-gray-800">
-     
-      <section className="bg-white py-20 px-6 text-center shadow">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Receiptly</h1>
-        <p className="text-lg mb-6 max-w-xl mx-auto">
-          Create, customize, and export beautiful professional receipts in minutes.
+    <div className="min-h-screen bg-[#111827] text-white font-sans">
+      {/* Hero Section */}
+      <section className="py-24 px-6 text-center bg-gradient-to-br from-[#0ec1c7] to-[#0aa1a5] animate-fade-in-down">
+        <h1 className="text-5xl md:text-6xl font-extrabold mb-4 tracking-tight">
+          Welcome to <span className="text-black">Receiptly</span>
+        </h1>
+        <p className="text-lg md:text-xl max-w-2xl mx-auto text-gray-200 mb-8">
+          Create stunning, shareable receipts in seconds — fully customizable & export-ready.
         </p>
         <Link
           to="/designer"
-          className="inline-block bg-black text-white px-6 py-3 rounded-lg hover:bg-gray-800 transition"
+          className="inline-block bg-black text-white px-8 py-3 rounded-lg hover:bg-white hover:text-black transition duration-300 font-semibold shadow-lg"
         >
           Get Started
         </Link>
       </section>
 
-      
-      <section className="py-20 px-6 bg-gray-50">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-          <div className="p-6 bg-white rounded-lg shadow hover:shadow-md transition">
-            <h3 className="text-xl font-semibold mb-2">Customizable Fields</h3>
-            <p className="text-sm text-gray-600">
-              Easily add your logo, business details, and itemized rows with full control.
-            </p>
-          </div>
-          <div className="p-6 bg-white rounded-lg shadow hover:shadow-md transition">
-            <h3 className="text-xl font-semibold mb-2">Export & Print</h3>
-            <p className="text-sm text-gray-600">
-              Export your receipt to PDF or print directly from your browser.
-            </p>
-          </div>
-          <div className="p-6 bg-white rounded-lg shadow hover:shadow-md transition">
-            <h3 className="text-xl font-semibold mb-2">QR Code Enabled</h3>
-            <p className="text-sm text-gray-600">
-              Generate a QR code to share your receipt digitally with ease.
-            </p>
-          </div>
+      {/* Features Section */}
+      <section className="py-20 px-6 bg-[#1f2937] animate-fade-in-up">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+          {[
+            {
+              title: "Customizable Fields",
+              desc: "Add your logo, business details, and line items with full control.",
+            },
+            {
+              title: "Export & Print",
+              desc: "Export your receipt to PDF or print directly from your browser.",
+            },
+            {
+              title: "QR Code Enabled",
+              desc: "Generate QR codes for digital sharing on any platform.",
+            },
+          ].map((feature, index) => (
+            <div
+              key={index}
+              className="p-6 bg-[#111827] rounded-xl border border-[#0ec1c7] hover:shadow-xl hover:scale-105 transition duration-300"
+            >
+              <h3 className="text-xl font-bold mb-3 text-[#0ec1c7]">
+                {feature.title}
+              </h3>
+              <p className="text-sm text-gray-300">{feature.desc}</p>
+            </div>
+          ))}
         </div>
       </section>
 
-      
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-8">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <div className="text-4xl mb-2">📝</div>
-              <h4 className="font-semibold mb-2">Step 1: Design</h4>
-              <p className="text-sm text-gray-600">Use our intuitive editor to customize your receipt layout and fields.</p>
-            </div>
-            <div>
-              <div className="text-4xl mb-2">📄</div>
-              <h4 className="font-semibold mb-2">Step 2: Preview</h4>
-              <p className="text-sm text-gray-600">See exactly how your receipt will look with a real-time preview.</p>
-            </div>
-            <div>
-              <div className="text-4xl mb-2">📤</div>
-              <h4 className="font-semibold mb-2">Step 3: Export</h4>
-              <p className="text-sm text-gray-600">Download as PDF, print, or share via QR code — all in one click.</p>
-            </div>
+      {/* How It Works Section */}
+      <section className="py-20 px-6 bg-[#0f172a] animate-fade-in-up">
+        <div className="max-w-5xl mx-auto text-center">
+          <h2 className="text-4xl font-bold mb-12 text-[#0ec1c7]">How It Works</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {[
+              {
+                icon: "📝",
+                title: "Design",
+                desc: "Use our sleek editor to customize your layout and fields.",
+              },
+              {
+                icon: "📄",
+                title: "Preview",
+                desc: "Real-time preview helps you perfect your receipt instantly.",
+              },
+              {
+                icon: "📤",
+                title: "Export",
+                desc: "Download as PDF, print, or share via QR — one click away.",
+              },
+            ].map((step, index) => (
+              <div key={index} className="p-6 bg-[#1e293b] rounded-xl hover:shadow-lg hover:scale-105 transition duration-300">
+                <div className="text-5xl mb-4">{step.icon}</div>
+                <h4 className="text-xl font-semibold mb-2 text-[#0ec1c7]">{step.title}</h4>
+                <p className="text-sm text-gray-300">{step.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-10 bg-white border-t text-center text-sm text-gray-500">
-        &copy; {new Date().getFullYear()} Receiptly. Built with ❤️ for professionals.
+      <footer className="py-10 text-center text-sm text-gray-400 bg-[#111827] border-t border-[#0ec1c7]">
+        &copy; {new Date().getFullYear()} Receiptly. Crafted with 💙 for modern professionals.
       </footer>
     </div>
   );

@@ -1,15 +1,17 @@
-// src/components/QRCodeDisplay.jsx
 import React from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 
 const QRCodeDisplay = () => {
-  const receiptURL = 'https://example.com/receipt/12345'; // Replace with dynamic or generated link
+  const receiptURL = 'https://example.com/receipt/12345'; 
 
   const downloadQRCode = () => {
     const canvas = document.getElementById('receipt-qr');
+    if (!canvas) return;
+
     const pngUrl = canvas
       .toDataURL('image/png')
       .replace('image/png', 'image/octet-stream');
+
     const downloadLink = document.createElement('a');
     downloadLink.href = pngUrl;
     downloadLink.download = 'receipt_qr.png';
@@ -19,20 +21,29 @@ const QRCodeDisplay = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <QRCodeCanvas
-        id="receipt-qr"
-        value={receiptURL}
-        size={200}
-        bgColor="#ffffff"
-        fgColor="#000000"
-        level="H"
-        includeMargin
-      />
-      <p className="mt-2 text-xs text-gray-500">{receiptURL}</p>
+    <div className="w-full flex flex-col items-center justify-center gap-4">
+      <div className="border border-gray-300 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow bg-white">
+        <QRCodeCanvas
+          id="receipt-qr"
+          value={receiptURL}
+          size={200}
+          bgColor="#ffffff"
+          fgColor="#000000"
+          level="H"
+          includeMargin
+          className="hover:scale-105 transition-transform"
+        />
+      </div>
+
+      <p className="text-sm text-gray-600 break-words text-center w-full">
+        {receiptURL.length > 40
+          ? receiptURL.substring(0, 37) + '...'
+          : receiptURL}
+      </p>
+
       <button
         onClick={downloadQRCode}
-        className="mt-4 px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+        className="px-5 py-2 rounded-lg text-sm font-medium bg-black text-white hover:bg-gray-800 transition-all"
       >
         ⬇ Download QR Code
       </button>

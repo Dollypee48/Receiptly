@@ -1,6 +1,18 @@
-// src/components/ReceiptForm.jsx
 import React from 'react';
 import { useReceipt } from '../context/ReceiptContext';
+
+const Input = ({ label, value, onChange, type = 'text', placeholder }) => (
+  <div>
+    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
+    <input
+      type={type}
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ec1c7]"
+    />
+  </div>
+);
 
 const ReceiptForm = () => {
   const {
@@ -12,80 +24,74 @@ const ReceiptForm = () => {
   } = useReceipt();
 
   return (
-    <form className="space-y-6">
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <label className="block mb-1">Store Name</label>
-          <input
-            type="text"
-            value={receiptData.storeName}
-            onChange={(e) => updateReceiptData('storeName', e.target.value)}
-            className="w-full border rounded p-2"
-          />
-        </div>
+    <form className="space-y-8 text-sm">
+      {/* Store Info */}
+      <div className="grid md:grid-cols-2 gap-6">
+        <Input
+          label="Store Name"
+          value={receiptData.storeName}
+          onChange={(e) => updateReceiptData('storeName', e.target.value)}
+          placeholder="e.g. Tech Hub"
+        />
 
         <div>
-          <label className="block mb-1">Logo</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Logo</label>
           <input
             type="file"
             accept="image/*"
             onChange={(e) =>
               updateReceiptData('storeLogo', URL.createObjectURL(e.target.files[0]))
             }
-            className="w-full"
+            className="block w-full text-sm"
           />
         </div>
 
-        <div>
-          <label className="block mb-1">Business Contact</label>
-          <input
-            type="text"
-            value={receiptData.businessContact}
-            onChange={(e) => updateReceiptData('businessContact', e.target.value)}
-            className="w-full border rounded p-2"
-          />
-        </div>
+        <Input
+          label="Business Contact"
+          value={receiptData.businessContact}
+          onChange={(e) => updateReceiptData('businessContact', e.target.value)}
+          placeholder="e.g. support@email.com"
+        />
 
-        <div>
-          <label className="block mb-1">Customer Name</label>
-          <input
-            type="text"
-            value={receiptData.customerName}
-            onChange={(e) => updateReceiptData('customerName', e.target.value)}
-            className="w-full border rounded p-2"
-          />
-        </div>
+        <Input
+          label="Customer Name"
+          value={receiptData.customerName}
+          onChange={(e) => updateReceiptData('customerName', e.target.value)}
+          placeholder="e.g. Jane Doe"
+        />
       </div>
 
+      {/* Items */}
       <div>
-        <label className="block mb-2">Items</label>
+        <label className="block text-sm font-semibold text-gray-800 mb-2">Items</label>
         {receiptData.items.map((item, index) => (
-          <div key={index} className="flex gap-2 mb-2 items-center">
+          <div key={index} className="flex flex-wrap sm:flex-nowrap items-center gap-2 mb-2">
             <input
               type="text"
-              placeholder="Item name"
               value={item.name}
+              placeholder="Item"
               onChange={(e) => updateItem(index, 'name', e.target.value)}
-              className="flex-1 border rounded p-2"
+              className="flex-1 rounded-md border border-gray-300 px-2 py-1"
             />
             <input
               type="number"
-              placeholder="Qty"
               value={item.qty}
+              placeholder="Qty"
               onChange={(e) => updateItem(index, 'qty', e.target.value)}
-              className="w-20 border rounded p-2"
+              className="w-20 rounded-md border border-gray-300 px-2 py-1"
             />
             <input
               type="number"
-              placeholder="Price"
               value={item.price}
+              placeholder="Price"
               onChange={(e) => updateItem(index, 'price', e.target.value)}
-              className="w-24 border rounded p-2"
+              className="w-24 rounded-md border border-gray-300 px-2 py-1"
             />
             <button
               type="button"
               onClick={() => removeItem(index)}
-              className="text-red-600"
+              className="text-red-500 hover:text-red-700 text-lg"
+              title="Remove item"
             >
               ✕
             </button>
@@ -94,49 +100,44 @@ const ReceiptForm = () => {
         <button
           type="button"
           onClick={addItem}
-          className="text-blue-600 mt-2"
+          className="text-[#0ec1c7] font-medium hover:underline mt-1 text-sm"
         >
           + Add Item
         </button>
       </div>
 
-      <div className="grid md:grid-cols-3 gap-4">
-        <div>
-          <label className="block mb-1">Tax Rate (%)</label>
-          <input
-            type="number"
-            value={receiptData.taxRate}
-            onChange={(e) => updateReceiptData('taxRate', e.target.value)}
-            className="w-full border rounded p-2"
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Discount</label>
-          <input
-            type="number"
-            value={receiptData.discount}
-            onChange={(e) => updateReceiptData('discount', e.target.value)}
-            className="w-full border rounded p-2"
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Shipping</label>
-          <input
-            type="number"
-            value={receiptData.shipping}
-            onChange={(e) => updateReceiptData('shipping', e.target.value)}
-            className="w-full border rounded p-2"
-          />
-        </div>
+      {/* Pricing */}
+      <div className="grid md:grid-cols-3 gap-6">
+        <Input
+          type="number"
+          label="Tax Rate (%)"
+          value={receiptData.taxRate}
+          onChange={(e) => updateReceiptData('taxRate', e.target.value)}
+        />
+        <Input
+          type="number"
+          label="Discount"
+          value={receiptData.discount}
+          onChange={(e) => updateReceiptData('discount', e.target.value)}
+        />
+        <Input
+          type="number"
+          label="Shipping"
+          value={receiptData.shipping}
+          onChange={(e) => updateReceiptData('shipping', e.target.value)}
+        />
       </div>
 
+      {/* Notes */}
       <div>
-        <label className="block mb-1">Notes</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
         <textarea
+          rows={3}
           value={receiptData.notes}
           onChange={(e) => updateReceiptData('notes', e.target.value)}
-          className="w-full border rounded p-2"
-        ></textarea>
+          placeholder="Optional: Add instructions or comments"
+          className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#0ec1c7]"
+        />
       </div>
     </form>
   );

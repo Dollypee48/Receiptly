@@ -1,21 +1,17 @@
-
 import React, { useRef } from 'react';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import ReceiptPreview from '../components/ReceiptPreview';
 import { useNavigate } from 'react-router-dom';
+import ReceiptPreview from '../components/ReceiptPreview';
 
 const ReceiptPreviewPage = () => {
-  const navigate = useNavigate();
   const previewRef = useRef(null);
+  const navigate = useNavigate();
 
-  const handlePrint = () => {
-    window.print();
-  };
+  const handlePrint = () => window.print();
 
   const handleDownloadPDF = async () => {
     const input = previewRef.current;
-
     if (!input) return;
 
     const canvas = await html2canvas(input, {
@@ -29,76 +25,74 @@ const ReceiptPreviewPage = () => {
     const imgData = canvas.toDataURL('image/png');
     const pdf = new jsPDF('p', 'pt', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
     const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
     let position = 0;
-    const pageHeight = pdf.internal.pageSize.getHeight();
 
     while (position < canvas.height) {
-      const canvasSlice = document.createElement('canvas');
-      canvasSlice.width = canvas.width;
-      canvasSlice.height = Math.min(pageHeight * 2, canvas.height - position);
+      const sliceCanvas = document.createElement('canvas');
+      const sliceHeight = Math.min(pageHeight * 2, canvas.height - position);
 
-      const ctx = canvasSlice.getContext('2d');
-      ctx.drawImage(
-        canvas,
-        0,
-        position,
-        canvas.width,
-        canvasSlice.height,
-        0,
-        0,
-        canvas.width,
-        canvasSlice.height
-      );
+      sliceCanvas.width = canvas.width;
+      sliceCanvas.height = sliceHeight;
 
-      const imgDataSlice = canvasSlice.toDataURL('image/png');
-      const heightInPDF = (canvasSlice.height * pdfWidth) / canvas.width;
+      const ctx = sliceCanvas.getContext('2d');
+      ctx.drawImage(canvas, 0, position, canvas.width, sliceHeight, 0, 0, canvas.width, sliceHeight);
+
+      const imgSlice = sliceCanvas.toDataURL('image/png');
+      const sliceHeightInPDF = (sliceHeight * pdfWidth) / canvas.width;
 
       if (position !== 0) pdf.addPage();
-      pdf.addImage(imgDataSlice, 'PNG', 0, 0, pdfWidth, heightInPDF);
-      position += canvasSlice.height;
+      pdf.addImage(imgSlice, 'PNG', 0, 0, pdfWidth, sliceHeightInPDF);
+
+      position += sliceHeight;
     }
 
     pdf.save('receipt.pdf');
   };
 
-  const handleNext = () => {
-    navigate('/share');
-  };
+  const handleNext = () => navigate('/share');
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-3xl mx-auto bg-white rounded-xl shadow p-6 print:p-0">
-        <h2 className="text-2xl font-bold text-center mb-6">Receipt Preview</h2>
+    <div className="min-h-screen bg-[#0f172a] text-white py-12 px-4">
+      <div className="max-w-4xl mx-auto bg-[#1f2937] rounded-3xl shadow-2xl p-10 space-y-10">
+        <header className="text-center">
+          <h1 className="text-4xl font-extrabold text-[#0ec1c7] tracking-tight mb-2">
+            📑 Receipt Preview
+          </h1>
+          <p className="text-gray-300 text-sm">
+            Review your receipt, download as PDF, print it, or share via QR code.
+          </p>
+        </header>
 
-        <div
+        <section
           ref={previewRef}
-          className="bg-white border p-4 rounded shadow print:border-none print:shadow-none"
+          className="bg-white rounded-xl p-6 shadow-inner border border-gray-200 text-black"
         >
           <ReceiptPreview />
-        </div>
+        </section>
 
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mt-6 print:hidden">
+        <footer className="flex flex-col md:flex-row justify-center gap-4 print:hidden">
           <button
             onClick={handlePrint}
-            className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+            className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg transition"
           >
-            🖨️ Print
+            🖨️ Print Receipt
           </button>
           <button
             onClick={handleDownloadPDF}
-            className="bg-yellow-600 text-white px-6 py-2 rounded hover:bg-yellow-700"
+            className="w-full md:w-auto bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 rounded-lg transition"
           >
-            📄 Download PDF
+            📥 Download PDF
           </button>
           <button
             onClick={handleNext}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+            className="w-full md:w-auto bg-[#0ec1c7] hover:bg-[#0aa1a5] text-black font-semibold px-6 py-3 rounded-lg transition"
           >
-            ➡ Continue to QR Code
+            ➡ Proceed to QR Code
           </button>
-        </div>
+        </footer>
       </div>
     </div>
   );
