@@ -33,8 +33,8 @@ export default function Home() {
               desc: "Export your receipt to PDF or print directly from your browser.",
             },
             {
-              title: "QR Code Enabled",
-              desc: "Generate QR codes for digital sharing on any platform.",
+              title: "Professional Templates",
+              desc: "Choose from modern templates tailored for business use.",
             },
           ].map((feature, index) => (
             <div
@@ -69,7 +69,7 @@ export default function Home() {
               {
                 icon: "📤",
                 title: "Export",
-                desc: "Download as PDF, print, or share via QR — one click away.",
+                desc: "Download as PDF or print — one click away.",
               },
             ].map((step, index) => (
               <div key={index} className="p-6 bg-[#1e293b] rounded-xl hover:shadow-lg hover:scale-105 transition duration-300">

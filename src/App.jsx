@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import ReceiptBuilder from './pages/ReceiptBuilder';
 import ReceiptPreviewPage from './pages/ReceiptPreviewPage';
-import ReceiptSharePage from './pages/ReceiptSharePage';
+import AboutPage from './pages/AboutPage';
 import Header from './components/Header';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/designer" element={<ReceiptBuilder />} />
             <Route path="/preview" element={<ReceiptPreviewPage />} />
-            <Route path="/share" element={<ReceiptSharePage />} />
+            <Route path="/about" element={<AboutPage />} />
           </Routes>
         </main>
       </div>
